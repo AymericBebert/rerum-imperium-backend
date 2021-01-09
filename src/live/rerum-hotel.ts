@@ -11,15 +11,7 @@ export class RerumHotel {
     }
 
     public getRoom(token: string): IRoom | null {
-        const rerumRoom = this.rooms[token];
-        if (!rerumRoom) {
-            return null;
-        }
-        return {
-            token: rerumRoom.token,
-            roomName: rerumRoom.roomName,
-            satellites: rerumRoom.satellites,
-        };
+        return this.rooms[token]?.room ?? null;
     }
 
     public addSatelles(socket: socketIO.Socket, announce: IAnnounce): RerumRoom | null {
@@ -72,7 +64,7 @@ export class RerumHotel {
         const numSatelles = this.rooms[token].getSatellesCount();
         const numImperium = await this.rooms[token].getImperiumCount();
         if (numSatelles === 0 && numImperium === 0) {
-            console.log(`Cleaning up room ${this.rooms[token].roomName} - ${token}`);
+            console.log(`Cleaning up room ${token}`);
             this.rooms[token].destroy();
             delete this.rooms[token];
         }

@@ -3,6 +3,7 @@ import {Subject} from 'rxjs';
 import {emitEvent, EmittedEventTypes} from '../events';
 import {ICommand, ISatelles} from '../model/satelles';
 import {IImperiumAction} from '../model/imperium';
+import {IRoom} from '../model/room';
 
 export class RerumRoom {
     public destroy$: Subject<void> = new Subject<void>();
@@ -14,16 +15,14 @@ export class RerumRoom {
     ) {
     }
 
-    public get token(): string {
-        return this._token;
-    }
-
-    public get roomName(): string {
-        return this._roomName;
-    }
-
-    public get satellites(): ISatelles[] {
-        return Object.values(this._satellites).map(s => s.satelles);
+    public get room(): IRoom {
+        return {
+            token: this._token,
+            roomName: this._roomName,
+            satellites: Object.values(this._satellites)
+                .map(s => s.satelles)
+                .sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)),
+        };
     }
 
     public get socketRoom(): string {
@@ -75,6 +74,7 @@ export class RerumRoom {
             console.error(e);
             return false;
         }
+        emitEvent(socket, 'room', this.room);
         return true;
     }
 
@@ -93,7 +93,7 @@ export class RerumRoom {
     }
 
     public imperiumAction(action: IImperiumAction): boolean {
-        const satelles = this._satellites[action.id];
+        const satelles = this._satellites[action.satellesId];
         if (satelles) {
             emitEvent(satelles.socket, 'imperium action', action);
             return true;
