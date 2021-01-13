@@ -1,6 +1,6 @@
 {
   "name": "rerum-imperium-backend",
-  "version": "0.1.0",
+  "version": "0.2.2",
   "description": "Backend for Rerum Imperium",
   "main": "index.js",
   "repository": {

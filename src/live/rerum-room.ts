@@ -40,7 +40,7 @@ export class RerumRoom {
             }
         }
         this._satellites[satelles.id] = {socket, satelles};
-        this.emit('satelles add', satelles);
+        this.emit('room', this.room);
         return true;
     }
 
@@ -50,7 +50,7 @@ export class RerumRoom {
         }
         this._satellites[id].socket.disconnect(true);
         delete this._satellites[id];
-        this.emit('satelles remove', id);
+        this.emit('room', this.room);
         return true;
     }
 
@@ -59,7 +59,7 @@ export class RerumRoom {
             return false;
         }
         this._satellites[id].satelles.commands = commands;
-        this.emit('satelles add', this._satellites[id].satelles);
+        this.emit('room', this.room);
         return true;
     }
 
