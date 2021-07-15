@@ -1,8 +1,8 @@
 import socketIO from 'socket.io';
-import {RerumRoom} from './rerum-room';
-import {IAnnounce} from '../model/satelles';
 import {IJoinRoom} from '../model/imperium';
 import {IRoom} from '../model/room';
+import {IAnnounce} from '../model/satelles';
+import {RerumRoom} from './rerum-room';
 
 export class RerumHotel {
     private rooms: { [token: string]: RerumRoom } = {};
@@ -37,7 +37,7 @@ export class RerumHotel {
         const numSatelles = this.rooms[token].getSatellesCount();
         console.log(`Room ${this.rooms[token].socketRoom}: satelles exited (${numSatelles} connected) ${socket.id}`);
         this.cleanRoomIfEmpty(token).catch(err => console.log(err));
-        return removed
+        return removed;
     }
 
     public async addImperium(socket: socketIO.Socket, join: IJoinRoom): Promise<RerumRoom | null> {

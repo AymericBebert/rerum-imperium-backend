@@ -6,14 +6,14 @@ export class HotelProvider {
 
     static registerHotel(hotel: RerumHotel): void {
         if (HotelProvider.instance) {
-            throw new Error('An hotel is already registered')
+            throw new Error('An hotel is already registered');
         }
         HotelProvider.instance = hotel;
     }
 
     static getInstance(): RerumHotel {
         if (!HotelProvider.instance) {
-            throw new Error('No hotel has been registered')
+            throw new Error('No hotel has been registered');
         }
         return HotelProvider.instance;
     }

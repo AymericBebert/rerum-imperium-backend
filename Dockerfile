@@ -1,4 +1,4 @@
-FROM node:14.15.3-stretch-slim AS builder
+FROM node:14.17.3-buster-slim AS builder
 
 RUN mkdir /rerum-imperium
 WORKDIR /rerum-imperium
@@ -9,16 +9,12 @@ RUN npm ci
 
 COPY . .
 
-ARG VERSION=untagged
-ARG BUILD_CONFIGURATION=production
-RUN echo "export const version = '$VERSION';\nexport const configuration = '$BUILD_CONFIGURATION';\n" > ./src/version.ts
-
 RUN npm run build
 
 #
 # Go back from clean node image
 #
-FROM node:14.15.3-stretch-slim
+FROM node:14.17.3-buster-slim
 
 RUN mkdir /rerum-imperium /rerum-imperium/node_modules /rerum-imperium/dist
 WORKDIR /rerum-imperium
@@ -27,6 +23,10 @@ COPY --from=builder ["/rerum-imperium/package.json", "/rerum-imperium/package-lo
 COPY --from=builder /rerum-imperium/node_modules ./node_modules/
 COPY --from=builder /rerum-imperium/dist ./dist/
 
+ARG VERSION=untagged
+RUN echo $VERSION > /version.txt
+
 EXPOSE 4060
 
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["npm", "run", "serve"]

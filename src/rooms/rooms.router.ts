@@ -1,6 +1,6 @@
 import {Router} from 'express';
-import {IRoom} from '../model/room';
 import {HotelProvider} from '../hotel-provider';
+import {IRoom} from '../model/room';
 
 
 interface WithError<T> {

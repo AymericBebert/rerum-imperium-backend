@@ -1,9 +1,9 @@
-import socketIO from 'socket.io';
 import {Subject} from 'rxjs';
+import socketIO from 'socket.io';
 import {emitEvent, EmittedEventTypes} from '../events';
-import {ICommand, ISatelles} from '../model/satelles';
 import {IImperiumAction} from '../model/imperium';
 import {IRoom} from '../model/room';
+import {ICommand, ISatelles} from '../model/satelles';
 
 export class RerumRoom {
     public destroy$: Subject<void> = new Subject<void>();

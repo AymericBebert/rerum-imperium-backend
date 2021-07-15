@@ -2,14 +2,14 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
 import {createServer, Server as HttpServer} from 'http';
-import {Server, Socket} from 'socket.io';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {Server, Socket} from 'socket.io';
+import {config} from './config';
 import {fromEventTyped} from './events';
-import {loggerMiddleware} from './middlewares/logger';
-import {RerumHotel} from './live/rerum-hotel';
-import {configuration, version} from './version';
 import {HotelProvider} from './hotel-provider';
+import {RerumHotel} from './live/rerum-hotel';
+import {loggerMiddleware} from './middlewares/logger';
 import roomsRouter from './rooms/rooms.router';
 
 // Get config from env
@@ -38,12 +38,12 @@ const io = new Server(
     http,
     sioAllowedOrigin
         ? {cors: {origin: sioAllowedOrigin.split(',')}}
-        : {cors: {origin: true}}
+        : {cors: {origin: true}},
 );
 
 // HTTP healthCheck route
 app.get('/healthCheck', (request, response) => {
-    response.send({hostname: request.hostname, status: 'ok', version, configuration});
+    response.send({hostname: request.hostname, status: 'ok', version: config.version});
 });
 
 // hotel
@@ -62,7 +62,7 @@ const onConnection = (socket: Socket): void => {
 
         const room = hotel.addSatelles(socket, announce);
         if (!room) {
-            return
+            return;
         }
 
         fromEventTyped(socket, 'satelles update')
@@ -90,7 +90,7 @@ const onConnection = (socket: Socket): void => {
 
         const room = await hotel.addImperium(socket, join);
         if (!room) {
-            return
+            return;
         }
 
         fromEventTyped(socket, 'imperium action')
