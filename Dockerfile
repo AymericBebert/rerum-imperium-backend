@@ -24,9 +24,8 @@ COPY --from=builder /rerum-imperium/node_modules ./node_modules/
 COPY --from=builder /rerum-imperium/dist ./dist/
 
 ARG VERSION=untagged
-RUN echo $VERSION > /version.txt
+RUN echo "VERSION=$VERSION" >/rerum-imperium/dist/.env
 
 EXPOSE 4060
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["npm", "run", "serve"]

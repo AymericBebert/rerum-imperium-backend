@@ -1,5 +1,6 @@
 import {Subject} from 'rxjs';
 import socketIO from 'socket.io';
+import {config} from '../config';
 import {emitEvent, EmittedEventTypes} from '../events';
 import {IImperiumAction} from '../model/imperium';
 import {IRoom} from '../model/room';
@@ -107,7 +108,7 @@ export class RerumRoom {
     }
 
     public emit<T extends keyof EmittedEventTypes>(eventName: T, ...args: Array<EmittedEventTypes[T]>): void {
-        if (process.env.DEBUG_SOCKET) {
+        if (config.debugSocket) {
             console.log(`socket< [${this.socketRoom}] ${eventName}: ${JSON.stringify(args[0])?.substr(0, 999)}`);
         } else {
             console.log(`Emitting event to clients of ${this.socketRoom}: ${eventName}`);

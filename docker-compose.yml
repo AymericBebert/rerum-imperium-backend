@@ -1,7 +1,7 @@
 version: "3"
 services:
   rerum_backend:
-    image: aymericbernard/rerum-imperium-backend:0.1.0
+    image: aymericbernard/rerum-imperium-backend:0.3.0
     ports:
       - "4060:4060"
     container_name: rerum_imperium_backend
@@ -9,10 +9,10 @@ services:
     networks:
       - proxy
     environment:
-      - PORT=4060
       - VIRTUAL_HOST=rerum-imperium-backend.kyr.pw
       - LETSENCRYPT_HOST=rerum-imperium-backend.kyr.pw
       - LETSENCRYPT_EMAIL=example@example.com
+      - PORT=4060
 networks:
   proxy:
     external:

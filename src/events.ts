@@ -1,6 +1,7 @@
 import {fromEvent, Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {Socket} from 'socket.io';
+import {config} from './config';
 import {IImperiumAction, IJoinRoom} from './model/imperium';
 import {IRoom} from './model/room';
 import {IAnnounce, ICommand, ISatelles} from './model/satelles';
@@ -28,7 +29,7 @@ export function fromEventTyped<T extends keyof ReceivedEventTypes>(
     eventName: T,
 ): Observable<ReceivedEventTypes[T]> {
     return fromEvent<ReceivedEventTypes[T]>(target, eventName).pipe(
-        tap(data => process.env.DEBUG_SOCKET && console.log(`socket> ${eventName}: ${JSON.stringify(data)}`)),
+        tap(data => config.debugSocket && console.log(`socket> ${eventName}: ${JSON.stringify(data)}`)),
     );
 }
 
@@ -37,7 +38,7 @@ export function emitEvent<T extends keyof EmittedEventTypes>(
     eventName: T,
     ...data: EmittedEventTypes[T][]
 ): void {
-    if (process.env.DEBUG_SOCKET) {
+    if (config.debugSocket) {
         console.log(`socket< ${eventName}: ${JSON.stringify(data[0])?.substr(0, 999)}`);
     }
     emitter.emit(eventName, ...(data as any));
