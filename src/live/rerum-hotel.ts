@@ -1,6 +1,5 @@
 import socketIO from 'socket.io';
 import {IJoinRoom} from '../model/imperium';
-import {IRoom} from '../model/room';
 import {IAnnounce} from '../model/satelles';
 import {RerumRoom} from './rerum-room';
 
@@ -10,8 +9,8 @@ export class RerumHotel {
     constructor(private readonly io: socketIO.Server) {
     }
 
-    public getRoom(token: string): IRoom | null {
-        return this.rooms[token]?.room ?? null;
+    public getRoom(token: string): RerumRoom | null {
+        return this.rooms[token] ?? null;
     }
 
     public addSatelles(socket: socketIO.Socket, announce: IAnnounce): RerumRoom | null {

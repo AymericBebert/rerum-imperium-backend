@@ -24,7 +24,7 @@ export interface EmittedEventTypes {
     'display error': string;
 }
 
-export function fromEventTyped<T extends keyof ReceivedEventTypes>(
+export function fromEvent$<T extends keyof ReceivedEventTypes>(
     target: Socket<ReceivedEventTypes, any>,
     eventName: T,
 ): Observable<ReceivedEventTypes[T]> {
