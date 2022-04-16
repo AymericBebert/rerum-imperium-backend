@@ -24,6 +24,11 @@ export const finalErrorHandler: ErrorRequestHandler = (err, req, res, _) => {
         }
         return res.status(responseCode).send(responseMessage);
     }
+    if (err.name === 'PayloadTooLargeError') {
+        console.log(`http> ${req.method} - ${req.path}`);
+        console.error('httpError> responding with HttpError', StatusCodes.REQUEST_TOO_LONG, responseMessage);
+        return res.status(StatusCodes.REQUEST_TOO_LONG).send(responseMessage);
+    }
     console.error('httpError> other error:', err.stack);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
 };
