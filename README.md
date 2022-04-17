@@ -4,7 +4,7 @@ Backend for Rerum Imperium project
 
 ## Installation
 
-`echo 'export const configOverride = {};' >src/config.override.ts`
+`cp .env.dist .env`
 
 ## Run the server
 
@@ -20,3 +20,12 @@ Backend for Rerum Imperium project
 
 With auto fix
 `npm run lint:fix`
+
+## Build new version
+
+We use GitHub Actions on tags to build the docker image
+
+```shell
+git tag 1.0.0
+git push origin 1.0.0
+```

@@ -1,4 +1,3 @@
-import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
 import {createServer, Server as HttpServer} from 'http';
@@ -7,11 +6,11 @@ import {Server, Socket} from 'socket.io';
 import {config} from './config';
 import {HotelProvider} from './hotel-provider';
 import {RerumHotel} from './live/rerum-hotel';
+import {handle404} from './middlewares/404-handler';
 import {finalErrorHandler} from './middlewares/final-error-handler';
 import {loggerMiddleware} from './middlewares/logger';
 import roomsRouter from './rooms/rooms.router';
 import {onConnection} from './socket/on-connection';
-import {HttpError} from './utils/http-error';
 
 // Readiness items
 const ready: Record<string, boolean> = {
@@ -21,11 +20,16 @@ const ready: Record<string, boolean> = {
 // Creating web server
 const app = express();
 
-// Required middlewares
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+// CORS config
+if (config.corsAllowedOrigin) {
+    app.use(cors({origin: `${config.corsAllowedOrigin}`, optionsSuccessStatus: 200, credentials: true}));
+} else {
+    app.use(cors());
+}
 
-app.use(loggerMiddleware);
+// Body and URL parsing middlewares
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 // HTTP probes (before logger middleware)
 app.get('/healthCheck', (request, response) => {
@@ -36,26 +40,14 @@ app.get('/ready', (request, response) => {
     response.status(Object.values(ready).every(r => r) ? StatusCodes.OK : StatusCodes.SERVICE_UNAVAILABLE).send(ready);
 });
 
-// HTTP CORS config
-const corsAllowedOrigin = config.corsAllowedOrigin;
-app.use(
-    (req, res, next) => next(),
-    corsAllowedOrigin
-        ? cors({origin: corsAllowedOrigin.split(','), optionsSuccessStatus: 200})
-        : cors(),
-);
+// Logger middleware
+app.use(loggerMiddleware);
 
-// routes
+// Routes
 app.use('/rooms', roomsRouter);
 
-// 404
-app.use((req, res, next) => {
-    if (!res.headersSent) {
-        next(new HttpError(StatusCodes.NOT_FOUND, 'Not Found', `No response for: ${req.path}`));
-    }
-});
-
-// Custom error handler
+// 404 and final error handlers
+app.use(handle404);
 app.use(finalErrorHandler);
 
 const http: HttpServer = createServer(app);
