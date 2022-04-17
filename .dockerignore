@@ -1,6 +1,7 @@
 .git
 Dockerfile
 .dockerignore
+.env
 
 /dist
 /e2e

@@ -23,8 +23,8 @@ COPY --from=builder ["/rerum-imperium/package.json", "/rerum-imperium/package-lo
 COPY --from=builder /rerum-imperium/node_modules ./node_modules/
 COPY --from=builder /rerum-imperium/dist ./dist/
 
-ARG VERSION=untagged
-RUN echo "VERSION=$VERSION" >/rerum-imperium/dist/.env
+ARG APP_VERSION=untagged
+RUN echo "APP_VERSION=$APP_VERSION" >/rerum-imperium/dist/.env
 
 EXPOSE 4060
 
