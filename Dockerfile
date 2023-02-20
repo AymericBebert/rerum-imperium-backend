@@ -1,4 +1,4 @@
-FROM node:16.14.2-bullseye-slim AS builder
+FROM node:16.19.1-bullseye-slim AS builder
 
 RUN mkdir /rerum-imperium
 WORKDIR /rerum-imperium
@@ -14,7 +14,7 @@ RUN npm run build
 #
 # Go back from clean node image
 #
-FROM node:16.14.2-bullseye-slim
+FROM node:16.19.1-bullseye-slim
 
 RUN mkdir /rerum-imperium /rerum-imperium/node_modules /rerum-imperium/dist
 WORKDIR /rerum-imperium
