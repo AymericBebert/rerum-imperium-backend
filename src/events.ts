@@ -25,10 +25,10 @@ export interface EmittedEventTypes {
 }
 
 export function fromEvent$<T extends keyof ReceivedEventTypes>(
-    target: Socket<ReceivedEventTypes, any>,
+    target: Socket<ReceivedEventTypes, never>,
     eventName: T,
 ): Observable<ReceivedEventTypes[T]> {
-    return fromEvent<ReceivedEventTypes[T]>(target, eventName).pipe(
+    return (fromEvent(target, eventName) as Observable<ReceivedEventTypes[T]>).pipe(
         tap(data => config.debugSocket && console.log(`socket> ${eventName}: ${JSON.stringify(data)}`)),
     );
 }
