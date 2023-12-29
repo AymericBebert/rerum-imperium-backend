@@ -4,22 +4,32 @@ Backend for Rerum Imperium project
 
 ## Installation
 
-`cp .env.dist .env`
+```shell
+cp .env.dist .env`
+```
 
 ## Run the server
 
-`npm run start`
+```shell
+npm run start`
+```
 
 ## Run tests
 
-`npm run test`
+```shell
+npm run test
+```
 
 ## Run lint
 
-`npm run lint`
+```shell
+npm run lint
+```
 
 With auto fix
-`npm run lint:fix`
+```shell
+npm run lint:fix
+```
 
 ## Build new version
 
