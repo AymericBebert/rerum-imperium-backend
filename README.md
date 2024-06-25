@@ -5,13 +5,13 @@ Backend for Rerum Imperium project
 ## Installation
 
 ```shell
-cp .env.dist .env`
+cp .env.dist .env
 ```
 
 ## Run the server
 
 ```shell
-npm run start`
+npm run start
 ```
 
 ## Run tests
