@@ -3,13 +3,15 @@ FROM node:22.11.0-bookworm-slim AS builder
 RUN mkdir /rerum-imperium
 WORKDIR /rerum-imperium
 
-COPY package.json package-lock.json tsconfig.json jest.config.js ./
+COPY package.json package-lock.json tsconfig.json ./
 
 RUN npm ci
 
 COPY . .
 
 RUN npm run build
+RUN rm -rf node_modules
+RUN npm ci --production
 
 #
 # Go back from clean node image
